@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 
 public record DatosPerfil(
     @NotBlank(message = "Error, el id no existe en la bd")
@@ -13,9 +15,9 @@ public record DatosPerfil(
     @NotNull(message = "Error, el nombre del rol no existe en la bd")
         Rol nombre,
     @Valid
-    DatosUsuario usuario
+    List<DatosUsuario> usuario
 ) {
     public  DatosPerfil(Perfil perfil){
-        this(perfil.getId(), perfil.getNombre(), new DatosUsuario(perfil.getUsuario()));
+        this(perfil.getId(), perfil.getNombre(), perfil.getUsuario().stream().map(DatosUsuario::new).toList());
     }
 }

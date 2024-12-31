@@ -42,6 +42,14 @@ public class Topico {
         this.autor = new Usuario(datosTopico.autor());
         this.respuestas = datosTopico.respuestas().stream().map(Respuesta::new).toList();
     }
+    public Topico(AgregarTopico datosTopico, Curso curso, Usuario autor){
+        this.titulo = datosTopico.titulo();
+        this.mensaje = datosTopico.mensaje();
+        this.fechaCreacion = LocalDateTime.now();
+        this.status = true;
+        this.curso = curso;
+        this.autor = autor;
+    }
     public Topico(){
     }
 

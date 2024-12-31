@@ -29,6 +29,10 @@ public class Curso {
         this.categoria = datosCurso.categoria();
         this.topicos = datosCurso.topicos().stream().map(Topico::new).toList();
     }
+    public Curso(AgregarCurso agregarCurso){
+        this.nombre = agregarCurso.nombre();
+        this.categoria = agregarCurso.categoria();
+    }
     public Curso(){
 
     }

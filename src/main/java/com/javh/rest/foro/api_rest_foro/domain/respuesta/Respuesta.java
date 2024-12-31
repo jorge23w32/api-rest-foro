@@ -38,6 +38,13 @@ public class Respuesta {
     }
     public Respuesta(){
     }
+    public Respuesta(AgregarRespuesta agregarRespuesta, Topico topico, Usuario usuario){
+        this.mensaje = agregarRespuesta.mensaje();
+        this.fechaCreacion = LocalDateTime.now();
+        this.solucion = agregarRespuesta.solucion();
+        this.topico = topico;
+        this.autor = usuario;
+    }
 
     //Getters
 

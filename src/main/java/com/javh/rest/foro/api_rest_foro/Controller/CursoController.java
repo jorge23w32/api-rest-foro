@@ -1,26 +1,36 @@
 package com.javh.rest.foro.api_rest_foro.Controller;
 
+import com.javh.rest.foro.api_rest_foro.domain.curso.AgregarCurso;
 import com.javh.rest.foro.api_rest_foro.domain.curso.CursoRepository;
-import com.javh.rest.foro.api_rest_foro.domain.curso.DevolverCurso;
+import com.javh.rest.foro.api_rest_foro.service.curso.CursoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/curso")
 public class CursoController {
     @Autowired
-    private CursoRepository repository;
+    private CursoService service = new CursoService();
 
     @GetMapping
-    public ResponseEntity<Page<DevolverCurso>> mostrarCursos(@PageableDefault(size = 5)Pageable pageable){
-        var cursos = repository.findAllPegable(pageable);
-        var datosCursos = cursos.map(DevolverCurso::new);
-        return ResponseEntity.ok(datosCursos);
+    public ResponseEntity mostrarCursos(@PageableDefault(size = 5)Pageable pageable){
+        return service.mostrarCursosBuscados(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity mostrarCurso(@PathVariable Long id){
+        return service.mostrarCursoBuscado(id);
+    }
+
+    //Agrega un curso
+    @PostMapping
+    public ResponseEntity agregarCurso(@RequestBody @Valid AgregarCurso agregarCurso, UriComponentsBuilder componentsBuilder){
+        var response = service.agregar(agregarCurso);
+        return response;
     }
 }

@@ -20,7 +20,7 @@ public class Usuario {
     private String correoElectronico;
     private String contrasena;
     //Clases Relacionadas
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "perfil_id", nullable = false)
     private Perfil perfil;
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
@@ -30,6 +30,9 @@ public class Usuario {
     private List<Topico> topicos;
 
     //Constructores
+    public Usuario(){
+
+    }
     public Usuario(DatosUsuario datosUsuario){
         this.nombre = datosUsuario.nombre();
         this.correoElectronico = datosUsuario.correoElectronico();
@@ -38,7 +41,12 @@ public class Usuario {
         this.respuestas = datosUsuario.respuestas().stream().map(Respuesta::new).toList();
         this.topicos = datosUsuario.topicos().stream().map(Topico::new).toList();
     }
-    public Usuario(){
+    public Usuario(AgregarUsuario agregarUsuario, Perfil perfil){
+        this.nombre = agregarUsuario.nombre();
+        this.correoElectronico = agregarUsuario.correoElectronico();
+        this.contrasena = agregarUsuario.contrasena();
+        this.perfil = perfil;
+
     }
 
     //Getters
