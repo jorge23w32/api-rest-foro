@@ -1,7 +1,10 @@
 package com.javh.rest.foro.api_rest_foro.domain.usuario;
 
+import com.javh.rest.foro.api_rest_foro.domain.perfil.DatosPerfil;
 import com.javh.rest.foro.api_rest_foro.domain.perfil.Perfil;
+import com.javh.rest.foro.api_rest_foro.domain.respuesta.DatosRespuesta;
 import com.javh.rest.foro.api_rest_foro.domain.respuesta.Respuesta;
+import com.javh.rest.foro.api_rest_foro.domain.topico.DatosTopico;
 import com.javh.rest.foro.api_rest_foro.domain.topico.Topico;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -13,19 +16,27 @@ import java.util.List;
 import java.util.Set;
 
 public record DatosUsuario(
-    @NotBlank(message = "Error, el campo no debe de estar vacio")
+    @NotBlank(message = "Error, el id no existe en la bd")
+        Long id,
+    @NotBlank(message = "Error, el nombre no existe en la db")
         String nombre,
-    @NotBlank(message = "Error, el campo no debe de estar vacio")
+    @NotBlank(message = "Error, el correoElectronico no existe en la db")
     @Email(message = "Error, el correo electronico propocionado no existe")
         String correoElectronico,
-    @NotBlank(message = "Error, el campo no debe de estar vacio")
+    @NotBlank(message = "Error, la constrasena no existe en la db")
         String contrasena,
-    @NotNull(message = "Error, debes de tener almenos un rol en el foro")
+    @NotNull(message = "Error, el rol no existe en la bd")
     @Valid
-        Set<Perfil> perfiles,
+    DatosPerfil perfil,
     @Valid
-        List<Respuesta> respuestas,
+        List<DatosRespuesta> respuestas,
     @Valid
-        List<Topico> topicos
+        List<DatosTopico> topicos
 ) {
+    public DatosUsuario(Usuario usuario) {
+        this(usuario.getId(), usuario.getNombre(), usuario.getCorreoElectronico(), usuario.getContrasena(),
+             new DatosPerfil(usuario.getPerfil()), usuario.getRespuestas().stream().map(DatosRespuesta::new).toList(),
+             usuario.getTopicos().stream().map(DatosTopico::new).toList());
+    }
+
 }
