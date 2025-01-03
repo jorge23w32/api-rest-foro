@@ -7,12 +7,11 @@ import com.javh.rest.foro.api_rest_foro.domain.topico.Topico;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 public record DevolverUsuarioSolo(
-        @NotBlank(message = "Error, el id no existe en la bd")
-        Long id,
         @NotBlank(message = "Error, el nombre no existe en la bd")
         String nombre,
         @NotBlank(message = "Error, el correoElectronico no existe en la bd")
@@ -24,6 +23,6 @@ public record DevolverUsuarioSolo(
         DevolverPerfilSolo perfil
 ) {
     public DevolverUsuarioSolo(Usuario usuario){
-        this(usuario.getId(), usuario.getNombre(), usuario.getCorreoElectronico(), usuario.getContrasena(), new DevolverPerfilSolo(usuario.getPerfil()));
+        this(usuario.getNombre(), usuario.getCorreoElectronico(), usuario.getContrasena(), new DevolverPerfilSolo(usuario.getPerfil()));
     }
 }

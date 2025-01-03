@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public record DatosPerfil(
-    @NotBlank(message = "Error, el id no existe en la bd")
+    @NotNull(message = "Error, el id no existe en la bd")
         Long id,
     @NotNull(message = "Error, el nombre del rol no existe en la bd")
         Rol nombre,

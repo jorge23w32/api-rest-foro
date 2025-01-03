@@ -29,6 +29,8 @@ public class Usuario {
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
     private List<Topico> topicos;
 
+    private Boolean activo;
+
     //Constructores
     public Usuario(){
 
@@ -40,12 +42,14 @@ public class Usuario {
         this.perfil = new Perfil(datosUsuario.perfil());
         this.respuestas = datosUsuario.respuestas().stream().map(Respuesta::new).toList();
         this.topicos = datosUsuario.topicos().stream().map(Topico::new).toList();
+        this.activo = true;
     }
     public Usuario(AgregarUsuario agregarUsuario, Perfil perfil){
         this.nombre = agregarUsuario.nombre();
         this.correoElectronico = agregarUsuario.correoElectronico();
         this.contrasena = agregarUsuario.contrasena();
         this.perfil = perfil;
+        this.activo = true;
 
     }
 
@@ -77,6 +81,25 @@ public class Usuario {
 
     public List<Topico> getTopicos() {
         return topicos;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void actualizarUsuario(ActualizarUsuario actualizarUsuario, Perfil perfil) {
+        if(actualizarUsuario.contrasena() != null){
+            this.contrasena = actualizarUsuario.contrasena();
+        }
+        if (actualizarUsuario.correoElectronico() != null) {
+            this.correoElectronico = actualizarUsuario.correoElectronico();
+        }
+        if(actualizarUsuario.nombre() != null){
+            this.nombre = actualizarUsuario.nombre();
+        }
+        if(perfil != null){
+            this.perfil = perfil;
+        }
     }
 
 

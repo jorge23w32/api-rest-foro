@@ -10,11 +10,9 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record DevolverRespuestaSola(
-        @NotBlank(message = "Error, no existe el id en la bd")
-        Long id,
         @NotBlank(message = "Error, no existe el mensaje en la bd")
         String mensaje,
-        @NotBlank(message = "Error, no existe la fechaCreacion en la bd")
+        @NotNull(message = "Error, no existe la fechaCreacion en la bd")
         LocalDateTime fechaCreacion,
         @NotBlank(message = "Error, no existe la solucion en la bd")
         String solucion,
@@ -24,7 +22,7 @@ public record DevolverRespuestaSola(
         DevolverUsuarioSolo autor
 ) {
     public DevolverRespuestaSola(Respuesta respuesta){
-        this(respuesta.getId(), respuesta.getMensaje(), respuesta.getFechaCreacion(),
+        this(respuesta.getMensaje(), respuesta.getFechaCreacion(),
                 respuesta.getSolucion(), new DevolverTopicoSolo(respuesta.getTopico()), new DevolverUsuarioSolo(respuesta.getAutor()));
     }
 }

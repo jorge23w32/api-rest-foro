@@ -6,8 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface CursoRepository extends JpaRepository<Curso, Long> {
-    @Query("select c from Curso c")
-    Page<Curso> findAllPegable(Pageable pageable);
+    Page<Curso> findByActivoTrue(Pageable pageable);
+
+    Optional<Curso> findByIdAndActivoTrue(Long id);
 }

@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record DatosCurso(
-    @NotBlank(message = "Error, el id no existe en la db")
+    @NotNull(message = "Error, el id no existe en la db")
         Long id,
     @NotBlank(message = "Error, el nombre no  existe en la db")
         String nombre,

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record DevolverCursoSolo(
-        @NotBlank(message = "Error, el id no existe en la bd")
+        @NotNull(message = "Error, el id no existe en la bd")
         Long id,
         @NotBlank(message = "Error, el nombre no existe en la bd")
         String nombre,

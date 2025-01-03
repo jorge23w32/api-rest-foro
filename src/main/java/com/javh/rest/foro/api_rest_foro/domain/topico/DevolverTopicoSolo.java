@@ -11,13 +11,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record DevolverTopicoSolo(
-        @NotNull(message = "Error el id no existe")
-        Long id,
         @NotBlank(message = "Error no se puede devolver el titulo ya que no existe")
         String titulo,
         @NotBlank(message = "Error no se puede devolver el mensaje ya que no existe")
         String mensaje,
-        @NotBlank(message = "Error no se puede devolver la fechaCreacion ya que no existe")
+        @NotNull(message = "Error no se puede devolver la fechaCreacion ya que no existe")
         LocalDateTime fechaCreacion,
         @Valid
         DevolverCursoSolo curso,
@@ -25,7 +23,7 @@ public record DevolverTopicoSolo(
         DevolverUsuarioSolo usuario
 ) {
     public DevolverTopicoSolo(Topico topico){
-        this(topico.getId(), topico.getTitulo(), topico.getMensaje(), topico.getFechaCreacion(),
+        this(topico.getTitulo(), topico.getMensaje(), topico.getFechaCreacion(),
              new DevolverCursoSolo(topico.getCurso()), new DevolverUsuarioSolo(topico.getAutor()));
     }
 }

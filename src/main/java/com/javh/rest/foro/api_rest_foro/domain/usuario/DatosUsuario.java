@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 public record DatosUsuario(
-    @NotBlank(message = "Error, el id no existe en la bd")
+    @NotNull(message = "Error, el id no existe en la bd")
         Long id,
     @NotBlank(message = "Error, el nombre no existe en la db")
         String nombre,

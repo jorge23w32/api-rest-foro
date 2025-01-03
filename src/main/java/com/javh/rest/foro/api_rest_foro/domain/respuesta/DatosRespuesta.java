@@ -14,11 +14,11 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record DatosRespuesta(
-        @NotBlank(message = "Error, el id no existe en la bd")
+        @NotNull(message = "Error, el id no existe en la bd")
             Long id,
         @NotBlank(message = "Error, el mensaje no existe en la bd")
             String mensaje,
-        @NotBlank(message = "Error, la fechaCreacion no existe en la bd")
+        @NotNull(message = "Error, la fechaCreacion no existe en la bd")
         @FutureOrPresent(message = "Error, la fechaCreacion debe de ser actual")
             LocalDateTime fechaCreacion,
         @NotBlank(message = "Error, la solucion no existe en la bd")

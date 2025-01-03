@@ -12,9 +12,9 @@ public record AgregarTopico(
         String titulo,
         @NotBlank(message = "Error no se puede devolver el mensaje ya que no existe")
         String mensaje,
-        @NotBlank(message = "Error, no se puede devolver el idCurso ya que no existe")
+        @NotNull(message = "Error, no se puede devolver el idCurso ya que no existe")
         Long idCurso,
-        @NotBlank(message = "Error, no se puede devolver el idAutor ya que no existe")
+        @NotNull(message = "Error, no se puede devolver el idAutor ya que no existe")
         Long idAutor
 ) {
 }

@@ -14,13 +14,13 @@ import java.util.List;
 
 //Clase para obtener los datos desde la base de datos y validarlos.
 public record DatosTopico(
-    @NotBlank(message = "Error, el id no existe en la db")
+    @NotNull(message = "Error, el id no existe en la db")
         Long id,
     @NotBlank(message = "Error, el titulo no existe en la db")
         String titulo,
     @NotBlank(message = "Error, el mensaje no existe en la db")
         String mensaje,
-    @NotBlank(message = "Error, la fechaCreacion no existe en la db")
+    @NotNull(message = "Error, la fechaCreacion no existe en la db")
     @FutureOrPresent(message = "Error, la fecha debe ser actual")
         LocalDateTime fechaCreacion,
     @NotNull(message = "Error, debe de contener un curso existente en la db")

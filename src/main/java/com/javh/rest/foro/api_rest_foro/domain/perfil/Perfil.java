@@ -21,6 +21,7 @@ public class Perfil {
     @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Usuario> usuario;
 
+    private Boolean activo;
     //Constructores
     public Perfil(){
 
@@ -28,11 +29,13 @@ public class Perfil {
     public Perfil(DatosPerfil datosPerfil){
         this.nombre = datosPerfil.nombre();
         this.usuario = datosPerfil.usuario().stream().map(Usuario::new).toList();
+        this.activo = true;
     }
     
 
     public Perfil(AgregarPerfil agregarPerfil) {
         this.nombre = agregarPerfil.nombre();
+        this.activo = true;
     }
     //Getters
     public Long getId() {
@@ -47,6 +50,9 @@ public class Perfil {
         return usuario;
     }
 
+    public Boolean getActivo() {
+        return activo;
+    }
         @Override
     public String toString() {
         return "Perfil{" +
@@ -54,5 +60,11 @@ public class Perfil {
                 ", nombre=" + nombre +
                 ", usuario=" + usuario +
                 '}';
+    }
+
+    public void actualizarPerfil(ActualizarPerfil actualizarPerfil) {
+        if(actualizarPerfil.nombre() != null){
+            this.nombre = actualizarPerfil.nombre();
+        }
     }
 }

@@ -1,9 +1,12 @@
 package com.javh.rest.foro.api_rest_foro.Controller;
 
+import com.javh.rest.foro.api_rest_foro.domain.curso.ActualizarCurso;
 import com.javh.rest.foro.api_rest_foro.domain.curso.AgregarCurso;
 import com.javh.rest.foro.api_rest_foro.domain.curso.CursoRepository;
 import com.javh.rest.foro.api_rest_foro.service.curso.CursoService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -23,14 +26,20 @@ public class CursoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity mostrarCurso(@PathVariable Long id){
+    public ResponseEntity mostrarCurso(@PathVariable @NotNull Long id){
         return service.mostrarCursoBuscado(id);
     }
 
     //Agrega un curso
     @PostMapping
-    public ResponseEntity agregarCurso(@RequestBody @Valid AgregarCurso agregarCurso, UriComponentsBuilder componentsBuilder){
-        var response = service.agregar(agregarCurso);
-        return response;
+    public ResponseEntity agregarCurso(@RequestBody @Valid AgregarCurso agregarCurso, UriComponentsBuilder builder){
+        return service.agregar(agregarCurso, builder);
+
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity actualizarCurso(@RequestBody @Valid ActualizarCurso actualizarCurso, @PathVariable @NotNull Long id){
+        return service.actualizar(id,actualizarCurso);
     }
 }
