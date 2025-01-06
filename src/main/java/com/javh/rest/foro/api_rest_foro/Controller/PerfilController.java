@@ -2,6 +2,7 @@ package com.javh.rest.foro.api_rest_foro.Controller;
 
 import com.javh.rest.foro.api_rest_foro.domain.perfil.*;
 import com.javh.rest.foro.api_rest_foro.service.perfil.PerfilService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/perfil")
+@SecurityRequirement(name = "bearer-key")
 public class PerfilController {
     @Autowired
     private PerfilService perfilService;
@@ -38,4 +40,11 @@ public class PerfilController {
     public ResponseEntity actualizarPerfil(@RequestBody @Valid ActualizarPerfil actualizarPerfil, @PathVariable @NotNull Long id){
         return perfilService.actualizar(id, actualizarPerfil);
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity eliminarPerfil(@PathVariable @NotNull Long id){
+        return perfilService.eliminar(id);
+    }
+
 }

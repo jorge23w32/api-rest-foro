@@ -5,6 +5,7 @@ import com.javh.rest.foro.api_rest_foro.domain.usuario.AgregarUsuario;
 import com.javh.rest.foro.api_rest_foro.domain.usuario.DevolverUsuarioCompleto;
 import com.javh.rest.foro.api_rest_foro.domain.usuario.UsuarioRepository;
 import com.javh.rest.foro.api_rest_foro.service.usuario.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/usuario")
+@SecurityRequirement(name = "bearer-key")
 public class UsuarioController {
     @Autowired
     private UsuarioService service;
@@ -41,5 +43,11 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity actualizarUsuario(@RequestBody @Valid ActualizarUsuario actualizarUsuario, @PathVariable @NotNull Long id){
         return service.actualizar(id, actualizarUsuario);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity eliminarUsuario(@PathVariable @NotNull Long id){
+        return service.eliminar(id);
     }
 }

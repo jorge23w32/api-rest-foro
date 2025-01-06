@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface CursoRepository extends JpaRepository<Curso, Long> {
-    Page<Curso> findByActivoTrue(Pageable pageable);
+    Page<Curso> findAll(Pageable pageable);
 
-    Optional<Curso> findByIdAndActivoTrue(Long id);
+    Optional<Curso> findById(Long id);
 }

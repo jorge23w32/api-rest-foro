@@ -1,6 +1,7 @@
 package com.javh.rest.foro.api_rest_foro.service.perfil;
 
 import com.javh.rest.foro.api_rest_foro.domain.perfil.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class PerfilService {
     private PerfilRepository perfilRepository;
 
     public ResponseEntity mostrarPerfilesBuscados(Pageable pageable){
-        var perfiles = perfilRepository.findByActivoTrue(pageable);
+        var perfiles = perfilRepository.findAll(pageable);
         if(perfiles.isEmpty() || perfiles == null){
             return ResponseEntity.badRequest().body("Error, no se pudo obtener los perfiles de la bd, intenta de nuevo");
         }
@@ -24,8 +25,8 @@ public class PerfilService {
     }
 
     public ResponseEntity mostrarPerfilBuscado(Long id) {
-        var perfil = perfilRepository.findByIdAndActivoTrue(id).orElse(null);
-        if(perfil == null || !perfil.getActivo()){
+        var perfil = perfilRepository.findById(id).orElse(null);
+        if(perfil == null){
             return ResponseEntity.badRequest().body("No hay un perfil con ese id");
         }
         var datosPerfil = new DevolverPerfilCompleto(perfil);
@@ -40,13 +41,23 @@ public class PerfilService {
     }
 
     public ResponseEntity actualizar(Long id, ActualizarPerfil actualizarPerfil){
-        var perfil = perfilRepository.findByIdAndActivoTrue(id).orElse(null);
-        if(perfil == null || !perfil.getActivo()){
+        var perfil = perfilRepository.findById(id).orElse(null);
+        if(perfil == null){
             return ResponseEntity.badRequest().body("Error, el id del perfil no existe en la base de datos");
         }
         perfil = perfilRepository.getReferenceById(id);
         perfil.actualizarPerfil(actualizarPerfil);
         var datosPerfil = new DevolverPerfilSolo(perfil);
         return ResponseEntity.ok(datosPerfil);
+    }
+
+    public ResponseEntity eliminar(Long id) {
+        var perfil = perfilRepository.findById(id).orElse(null);
+        if(perfil == null){
+            return ResponseEntity.badRequest().body("Error, el id del perfil no existe en la base de datos");
+        }
+        perfil = perfilRepository.getReferenceById(id);
+        perfilRepository.delete(perfil);
+        return ResponseEntity.ok().body("Se elimino de manera correcta el perfil");
     }
 }

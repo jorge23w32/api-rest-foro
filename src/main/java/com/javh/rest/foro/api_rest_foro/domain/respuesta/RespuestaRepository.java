@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface RespuestaRepository extends JpaRepository<Respuesta, Long> {
 
-    Page<Respuesta> findByActivoTrue(Pageable pageable);
+    Page<Respuesta> findAll(Pageable pageable);
 
-    Optional<Respuesta> findByIdAndActivoTrue(Long id);
+    Optional<Respuesta> findById(Long id);
 }

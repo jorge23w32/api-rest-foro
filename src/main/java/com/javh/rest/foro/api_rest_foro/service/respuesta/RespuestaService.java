@@ -2,7 +2,9 @@ package com.javh.rest.foro.api_rest_foro.service.respuesta;
 
 import com.javh.rest.foro.api_rest_foro.domain.respuesta.*;
 import com.javh.rest.foro.api_rest_foro.domain.topico.TopicoRepository;
+import com.javh.rest.foro.api_rest_foro.domain.usuario.Usuario;
 import com.javh.rest.foro.api_rest_foro.domain.usuario.UsuarioRepository;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +24,14 @@ public class RespuestaService {
 
 
     public ResponseEntity mostrarRespuestasBuscadas(Pageable pageable) {
-        var respuestas = respuestaRepository.findByActivoTrue(pageable);
+        var respuestas = respuestaRepository.findAll(pageable);
         var datosRespuestas = respuestas.map(DevolverRespuestaCompleta::new);
         return ResponseEntity.ok(datosRespuestas);
     }
 
     public ResponseEntity mostrarRespuestaBuscada(Long id) {
-        var respuesta = respuestaRepository.findByIdAndActivoTrue(id).orElse(null);
-        if(respuesta == null || !respuesta.getActivo()){
+        var respuesta = respuestaRepository.findById(id).orElse(null);
+        if(respuesta == null ){
             return ResponseEntity.badRequest().body("No hay una respuesta con ese id");
         }
         var datosRespuesta = new DevolverRespuestaCompleta(respuesta);
@@ -37,9 +39,9 @@ public class RespuestaService {
     }
 
     public ResponseEntity agregar(AgregarRespuesta agregarRespuesta, UriComponentsBuilder builder){
-        var autor = usuarioRepository.findByIdAndActivoTrue(agregarRespuesta.autor()).orElse(null);
-        var topico = topicoRepository.findByIdAndActivoTrue(agregarRespuesta.topico()).orElse(null);
-        if(autor ==null || !autor.getActivo() || topico == null || !topico.getActivo()){
+        var autor = usuarioRepository.findById(agregarRespuesta.autor()).orElse(null);
+        var topico = topicoRepository.findById(agregarRespuesta.topico()).orElse(null);
+        if(autor ==null ||  topico == null ){
             return ResponseEntity.badRequest().body("Error, no se encontro el autor o el topico en la bd, verifica e intenta de nuevo");
         }
         var respuesta = respuestaRepository.save(new Respuesta(agregarRespuesta, topico, autor));
@@ -49,8 +51,8 @@ public class RespuestaService {
     }
 
     public ResponseEntity actualizar(Long id,ActualizarRespuesta actualizarRespuesta){
-        var respuesta = respuestaRepository.findByIdAndActivoTrue(id).orElse(null);
-        if(respuesta == null || !respuesta.getActivo()){
+        var respuesta = respuestaRepository.findById(id).orElse(null);
+        if(respuesta == null ){
             return ResponseEntity.badRequest().body("Error, el id de la respuesta no existe en la base de datos");
         }
 
@@ -62,5 +64,15 @@ public class RespuestaService {
         respuesta.actualizarUsuario(actualizarRespuesta);
         var respuestaDatos = new DevolverRespuestaSola(respuesta);
         return ResponseEntity.ok(respuestaDatos);
+    }
+
+    public ResponseEntity eliminar(Long id) {
+        var respuesta = respuestaRepository.findById(id).orElse(null);
+        if(respuesta == null){
+            return ResponseEntity.badRequest().body("Error, el id de la respuesta no existe, intenta de nuevo");
+        }
+        respuesta = respuestaRepository.getReferenceById(id);
+        respuestaRepository.delete(respuesta);
+        return ResponseEntity.ok("La respuesta se elimino correctamente");
     }
 }

@@ -1,6 +1,7 @@
 package com.javh.rest.foro.api_rest_foro.service.curso;
 
 import com.javh.rest.foro.api_rest_foro.domain.curso.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class CursoService {
     private CursoRepository repository;
 
     public ResponseEntity mostrarCursosBuscados(Pageable pageable) {
-        var cursos = repository.findByActivoTrue(pageable);
+        var cursos = repository.findAll(pageable);
         if(cursos == null || cursos.isEmpty()){
             return ResponseEntity.badRequest().body("Error, no se pudieron obtener los cursos, intenta de nuevo");
         }
@@ -25,8 +26,8 @@ public class CursoService {
     }
 
     public ResponseEntity mostrarCursoBuscado(Long id) {
-        var curso = repository.findByIdAndActivoTrue(id).orElse(null);
-        if(curso == null || !curso.getActivo()) {
+        var curso = repository.findById(id).orElse(null);
+        if(curso == null) {
             return ResponseEntity.badRequest().body("No hay un curso con el id mencionado");
         }
         var datosCurso = new DevolverCursoCompleto(curso);
@@ -41,8 +42,8 @@ public class CursoService {
     }
 
     public ResponseEntity actualizar( Long id, ActualizarCurso actualizarCurso){
-        var curso = repository.findByIdAndActivoTrue(id).orElse(null);
-        if(curso == null || !curso.getActivo()){
+        var curso = repository.findById(id).orElse(null);
+        if(curso == null){
             return ResponseEntity.badRequest().body("Error el id no se encuentra en la base de datos, intenta con otro");
         }
         curso = repository.getReferenceById(id);
@@ -52,4 +53,13 @@ public class CursoService {
         return ResponseEntity.ok(datosCurso);
     }
 
+    public ResponseEntity eliminar(Long id) {
+        var curso = repository.findById(id).orElse(null);
+        if(curso == null){
+            return ResponseEntity.badRequest().body("Error, el id del curso no existe en la base de datos");
+        }
+        curso = repository.getReferenceById(id);
+        repository.delete(curso);
+        return ResponseEntity.ok("Se elimino de manera correcta el curso");
+    }
 }

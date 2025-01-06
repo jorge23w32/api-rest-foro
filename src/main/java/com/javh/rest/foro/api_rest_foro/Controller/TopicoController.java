@@ -3,6 +3,7 @@ package com.javh.rest.foro.api_rest_foro.Controller;
 import com.javh.rest.foro.api_rest_foro.domain.topico.ActualizarTopico;
 import com.javh.rest.foro.api_rest_foro.domain.topico.AgregarTopico;
 import com.javh.rest.foro.api_rest_foro.service.topico.TopicoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/topico")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
     @Autowired
     private TopicoService service;
@@ -39,5 +41,11 @@ public class TopicoController {
     @Transactional
     public ResponseEntity actualizarTopico(@RequestBody @Valid ActualizarTopico actualizarTopico, @PathVariable @NotNull Long id){
         return service.actualizar(id,actualizarTopico);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity eliminarTopico(@PathVariable @NotNull Long id){
+        return service.eliminar(id);
     }
 }

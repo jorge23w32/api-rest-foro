@@ -23,19 +23,16 @@ public class Curso {
     @OneToMany(mappedBy = "curso", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Topico> topicos;
 
-    private Boolean activo;
 
     //Constructores
     public Curso(DatosCurso datosCurso){
         this.nombre = datosCurso.nombre();
         this.categoria = datosCurso.categoria();
         this.topicos = datosCurso.topicos().stream().map(Topico::new).toList();
-        this.activo = true;
     }
     public Curso(AgregarCurso agregarCurso){
         this.nombre = agregarCurso.nombre();
         this.categoria = agregarCurso.categoria();
-        this.activo = true;
     }
     public Curso(){
 
@@ -60,9 +57,7 @@ public class Curso {
         return topicos;
     }
 
-    public Boolean getActivo() {
-        return activo;
-    }
+
 
     public void actualizaraCurso(ActualizarCurso actualizarCurso) {
         if(actualizarCurso.categoria() != null){

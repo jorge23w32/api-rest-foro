@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface PerfilRepository extends JpaRepository<Perfil, Long> {
 
-    Page<Perfil> findByActivoTrue(Pageable pageable);
+    Page<Perfil> findAll(Pageable pageable);
 
-    Optional<Perfil> findByIdAndActivoTrue(Long id);
+    Optional<Perfil> findById(Long id);
 }

@@ -17,23 +17,23 @@ public class Topico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String titulo;
+    @Column(unique = true)
     private String mensaje;
     private LocalDateTime fechaCreacion;
     private Boolean status;
 //  Clases Relacionadas
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor", nullable = false)
     private Usuario autor;
 
     @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL)
     private List<Respuesta> respuestas;
-
-    private Boolean activo;
 
     public Topico(DatosTopico datosTopico){
         this.titulo = datosTopico.titulo();
@@ -43,7 +43,6 @@ public class Topico {
         this.curso = new Curso(datosTopico.curso());
         this.autor = new Usuario(datosTopico.autor());
         this.respuestas = datosTopico.respuestas().stream().map(Respuesta::new).toList();
-        this.activo = true;
     }
     public Topico(AgregarTopico datosTopico, Curso curso, Usuario autor){
         this.titulo = datosTopico.titulo();
@@ -52,7 +51,6 @@ public class Topico {
         this.status = true;
         this.curso = curso;
         this.autor = autor;
-        this.activo = true;
     }
     public Topico(){
     }
@@ -92,9 +90,6 @@ public class Topico {
         return respuestas;
     }
 
-    public Boolean getActivo() {
-        return activo;
-    }
 
     public void actualizarTopico(ActualizarTopico actualizarTopico, Curso curso) {
         if(actualizarTopico.mensaje() != null){

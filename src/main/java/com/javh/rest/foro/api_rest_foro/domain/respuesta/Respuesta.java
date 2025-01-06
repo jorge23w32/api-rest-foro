@@ -28,7 +28,6 @@ public class Respuesta {
     @JoinColumn(name = "autor", nullable = false)
     private Usuario autor;
 
-    private Boolean activo;
 
     //Constructores
     public Respuesta(DatosRespuesta datosRespuesta){
@@ -37,7 +36,6 @@ public class Respuesta {
         this.solucion = datosRespuesta.solucion();
         this.topico = new Topico(datosRespuesta.topico());
         this.autor = new Usuario(datosRespuesta.autor());
-        this.activo = true;
     }
     public Respuesta(){
     }
@@ -47,7 +45,6 @@ public class Respuesta {
         this.solucion = agregarRespuesta.solucion();
         this.topico = topico;
         this.autor = usuario;
-        this.activo = true;
     }
 
     //Getters
@@ -76,9 +73,6 @@ public class Respuesta {
         return autor;
     }
 
-    public Boolean getActivo() {
-        return activo;
-    }
 
     public void actualizarUsuario(ActualizarRespuesta actualizarRespuesta) {
         if(actualizarRespuesta.mensaje() != null){

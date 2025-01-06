@@ -5,6 +5,7 @@ import com.javh.rest.foro.api_rest_foro.domain.respuesta.AgregarRespuesta;
 import com.javh.rest.foro.api_rest_foro.domain.respuesta.DevolverRespuestaCompleta;
 import com.javh.rest.foro.api_rest_foro.domain.respuesta.RespuestaRepository;
 import com.javh.rest.foro.api_rest_foro.service.respuesta.RespuestaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/respuesta")
+@SecurityRequirement(name = "bearer-key")
 public class RespuestaController {
     @Autowired
     private RespuestaService service;
@@ -41,5 +43,11 @@ public class RespuestaController {
     @Transactional
     public ResponseEntity actualizarRespuesta(@RequestBody @Valid ActualizarRespuesta actualizarRespuesta, @PathVariable @NotNull Long id){
         return service.actualizar(id,actualizarRespuesta);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity eliminarRespuesta(@PathVariable @NotNull Long id){
+        return service.eliminar(id);
     }
 }
